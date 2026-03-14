@@ -8,4 +8,6 @@ public interface UserSecurity {
     User singIn(String email, String password) throws ServiceException;
 
     boolean registratin(RegistrationInfo info) throws ServiceException;
+
+    User infoUser(String email) throws ServiceException;
 }

@@ -1,5 +1,6 @@
 package edu.training.news_portal.web.impl;
 
+import edu.training.news_portal.beans.Page;
 import edu.training.news_portal.web.Command;
 import edu.training.news_portal.beans.News;
 import edu.training.news_portal.service.NewsService;
@@ -21,8 +22,8 @@ public class PageMain implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            List<News> news = newsService.takeTopNews(4);
-            request.setAttribute("topNews",news);
+            List<News> newsPage = newsService.takeTopNews(4);
+            request.setAttribute("topNews",newsPage);
             RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/main.jsp");
             dispatcher.forward(request,response);
         }catch (ServiceException e){

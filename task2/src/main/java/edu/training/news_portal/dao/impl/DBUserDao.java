@@ -110,4 +110,25 @@ public class DBUserDao implements UserDao {
         }
         return false;
     }
+
+    private static final String SQL_SELECT_USER_BY_EMAIL = "SELECT us.id, usd.name, usd.surname, us.email, rol.name,us.created_at\n" +
+            "FROM users us\n" +
+            "JOIN user_details usd ON us.id = usd.users_id\n" +
+            "LEFT JOIN roles rol ON us.roles_id = rol.id\n" +
+            "WHERE us.email = ?";
+
+    public User findUserByEmail(String email) throws DaoException {
+        try(Connection con = pool.takeConnection();
+            PreparedStatement pStSelectUsersEmailPassword = con.prepareStatement(SQL_SELECT_USER_BY_EMAIL)
+        ) {
+            pStSelectUsersEmailPassword.setString(1,email);
+            ResultSet rs = pStSelectUsersEmailPassword.executeQuery();
+            rs.next();
+            return new User(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6));
+
+        }catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
 }

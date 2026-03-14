@@ -1,528 +1,50 @@
 <%@page isELIgnored="false" %>
 
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Новостной портал</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        /* Шапка сайта */
-        header {
-            background-color: #1a73e8;
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background-color: rgba(255,255,255,0.2);
-        }
-
-        .auth-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-login {
-            background-color: transparent;
-            border: 1px solid white;
-            color: white;
-        }
-
-        .btn-register {
-            background-color: white;
-            color: #1a73e8;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        /* Формы входа и регистрации */
-        .auth-forms {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .auth-form {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .form-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .form-header h2 {
-            font-size: 22px;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #666;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-
-        .form-submit {
-            width: 100%;
-            padding: 12px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .form-footer a {
-            color: #1a73e8;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Контент страниц */
-        .page-content {
-            display: none;
-            padding: 30px 0;
-            min-height: 60vh;
-        }
-
-        .page-content.active {
-            display: block;
-        }
-
-        .section-title {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #333;
-            border-bottom: 2px solid #1a73e8;
-            padding-bottom: 10px;
-        }
-
-        /* Новостная лента */
-        .news-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .news-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        .news-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .news-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .news-content {
-            padding: 20px;
-        }
-
-        .news-category {
-            display: inline-block;
-            background-color: #e8f0fe;
-            color: #1a73e8;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .news-title {
-            font-size: 18px;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-
-        .news-excerpt {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .news-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: #999;
-        }
-
-        /* Страница новости */
-        .news-detail {
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .news-detail-image {
-            width: 100%;
-            max-height: 400px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .news-detail-content {
-            line-height: 1.8;
-        }
-
-        .news-detail-content h1 {
-            font-size: 32px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .news-detail-meta {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .back-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #1a73e8;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .back-button:hover {
-            background-color: #0d62d9;
-        }
-
-        /* Страница профиля */
-        .profile-info {
-            background-color: white;
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background-color: #e8f0fe;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            color: #1a73e8;
-            margin: 0 auto 20px;
-        }
-
-        .profile-field {
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .profile-label {
-            font-weight: 600;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        /* Подвал */
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 30px 0;
-            margin-top: 40px;
-        }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .footer-section {
-            flex: 1;
-            min-width: 250px;
-            margin-bottom: 20px;
-        }
-
-        .footer-section h3 {
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 8px;
-        }
-
-        .footer-section a {
-            color: #ddd;
-            text-decoration: none;
-        }
-
-        .footer-section a:hover {
-            color: white;
-            text-decoration: underline;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #555;
-            font-size: 14px;
-            color: #aaa;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .nav-menu {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .news-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 <body>
-<!-- Шапка сайта -->
-<header>
-    <div class="container">
-        <div class="header-content">
-            <div class="logo" data-route="/news/index">Новостной портал</div>
-            <nav class="nav-menu">
-                <a href="#" class="nav-link" data-route="/news/index">Главная</a>
-                <a href="#" class="nav-link" data-route="/news/category?cat=politics">Политика</a>
-                <a href="#" class="nav-link" data-route="/news/category?cat=economy">Экономика</a>
-                <a href="#" class="nav-link" data-route="/news/category?cat=technology">Технологии</a>
-                <a href="#" class="nav-link" data-route="/news/category?cat=sports">Спорт</a>
-            </nav>
-            <div class="auth-buttons">
-                <a class="btn btn-login" href="Controller?command=page_auth">Войти</a>
-                <a class="btn btn-register" href="Controller?command=page_registration">Зарегистрироваться</a>
-            </div>
-        </div>
-    </div>
-</header>
-
-<!-- Форма входа -->
-<div class="auth-forms" id="loginForm">
-    <div class="auth-form">
-        <div class="form-header">
-            <h2>Вход в аккаунт</h2>
-            <button class="close-btn" id="closeLogin">&times;</button>
-        </div>
-        <form id="loginFormData">
-            <div class="form-group">
-                <label for="loginEmail">Email</label>
-                <input type="email" id="loginEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="loginPassword">Пароль</label>
-                <input type="password" id="loginPassword" required>
-            </div>
-            <button type="submit" class="form-submit">Войти</button>
-        </form>
-        <div class="form-footer">
-            Нет аккаунта? <a id="switchToRegister">Зарегистрироваться</a>
-        </div>
-    </div>
-</div>
-
-<!-- Форма регистрации -->
-<div class="auth-forms" id="registerForm">
-    <div class="auth-form">
-        <div class="form-header">
-            <h2>Регистрация</h2>
-            <button class="close-btn" id="closeRegister">&times;</button>
-        </div>
-        <form id="registerFormData">
-            <div class="form-group">
-                <label for="registerName">Имя</label>
-                <input type="text" id="registerName" required>
-            </div>
-            <div class="form-group">
-                <label for="registerEmail">Email</label>
-                <input type="email" id="registerEmail" required>
-            </div>
-            <div class="form-group">
-                <label for="registerPassword">Пароль</label>
-                <input type="password" id="registerPassword" required>
-            </div>
-            <div class="form-group">
-                <label for="registerConfirmPassword">Подтвердите пароль</label>
-                <input type="password" id="registerConfirmPassword" required>
-            </div>
-            <button type="submit" class="form-submit">Зарегистрироваться</button>
-        </form>
-        <div class="form-footer">
-            Уже есть аккаунт? <a id="switchToLogin">Войти</a>
-        </div>
-    </div>
-</div>
+<!-- HEADER -->
+<%@ include file="/WEB-INF/jspf/header.jspf" %>
 
 <!-- Главная страница -->
 <section class="page-content active" id="newsIndexPage">
     <div class="container">
         <h2 class="section-title">Последние новости</h2>
-        <c:forEach var="news" items="${requestScope.topNews}">
-        <div class="news-grid" ><!--id="newsContainer"-->
-
-                <!-- <img src="$" alt="${news.title}" class="news-image">
-                <div class="news-content">
-                    <span class="news-category"></span>
-                    <h3 class="news-title">${news.title}</h3>
-                    <p class="news-excerpt">${news.excerpt}</p>
-                    <div class="news-meta">
-                        <span></span>
-                        <span>Автор: Редакция</span>
-                    </div>
-                </div>-->
-
-                <img src="${news.image}" alt="${news.title}" class="news-image">
-                <div class="news-content">
-                    <span class="news-category"></span>
-                    <h3 class="news-title">${news.title}</h3>
-                    <p class="news-excerpt">${news.excerpt}</p>
-                    <div class="news-meta">
-                        <span>${news.dats}</span>
-                        <span>Автор: Редакция</span>
-                    </div>
+        <c:choose>
+            <c:when test="${not empty requestScope.topNews && !empty requestScope.topNews}">
+                <div class="row justify-content-center">
+                    <c:forEach var="news" items="${requestScope.topNews}" varStatus="status" end="3">
+                        <div class="news-grid" >
+                            <img src="${news.image}" alt="${news.title}" class="news-image">
+                            <div class="news-content">
+                                <span class="news-category">${news.category}</span>
+                                <h3 class="news-title">${news.title}</h3>
+                                <p class="news-excerpt">${news.brief}</p>
+                                <div class="news-meta">
+                                    <span>${news.date}</span>
+                                    <span>Автор:${news.authorSurname} ${news.authorName}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
                 </div>
+            </c:when>
+            <c:otherwise>
+                <div class="alert alert-info" role="alert">
+                    <h5>Новостей пока нет</h5>
+                    <p>В базе данных пока нет новостей. Добавьте новости для отображения на главной странице.</p>
+                </div>
+            </c:otherwise>
+        </c:choose>
 
-        </div>
-        </c:forEach>
+
     </div>
 </section>
 
@@ -558,38 +80,8 @@
     </div>
 </section>
 
-<!-- Подвал -->
-<footer>
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>О нас</h3>
-                <p>Новостной портал предоставляет актуальные новости из разных сфер жизни.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Категории</h3>
-                <ul>
-                    <li><a href="#" data-route="/news/category?cat=politics">Политика</a></li>
-                    <li><a href="#" data-route="/news/category?cat=economy">Экономика</a></li>
-                    <li><a href="#" data-route="/news/category?cat=technology">Наука и технологии</a></li>
-                    <li><a href="#" data-route="/news/category?cat=sports">Спорт</a></li>
-                    <li><a href="#" data-route="/news/category?cat=culture">Культура</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Контакты</h3>
-                <ul>
-                    <li>Email: info@newsportal.ru</li>
-                    <li>Телефон: +7 (495) 123-45-67</li>
-                    <li>Адрес: Москва, ул. Примерная, д. 1</li>
-                </ul>
-            </div>
-        </div>
-        <div class="copyright">
-            &copy; 2023 Новостной портал. Все права защищены.
-        </div>
-    </div>
-</footer>
+<!-- FOOTER -->
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
 
 <script>
     // Система маршрутизации

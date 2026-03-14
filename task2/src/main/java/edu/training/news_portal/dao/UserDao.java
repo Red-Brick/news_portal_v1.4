@@ -7,4 +7,5 @@ public interface UserDao {
 
     User checkCredentials(String login, String password) throws DaoException;
     boolean registration(RegistrationInfo info) throws DaoException;
+    User findUserByEmail(String email) throws DaoException;
 }

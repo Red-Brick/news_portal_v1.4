@@ -30,4 +30,13 @@ public class NewsPortalUserSecurity implements UserSecurity {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public User infoUser(String email) throws ServiceException {
+        try {
+            return userDao.findUserByEmail(email);
+        }catch (DaoException e){
+            throw new ServiceException(e);
+        }
+    }
 }

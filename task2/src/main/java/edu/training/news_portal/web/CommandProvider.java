@@ -17,6 +17,14 @@ public class CommandProvider {
         commands.put(RequestPath.DO_AUTH, new DoAuth());
         commands.put(RequestPath.DO_REGISTRATION, new DoRegistration());
         commands.put(RequestPath.NO_COMMAND, new NoCommand());
+        commands.put(RequestPath.DO_ADD_NEWS, new DoAddNews());
+        commands.put(RequestPath.DO_EDIT_NEWS, new DoEditNews());
+        commands.put(RequestPath.DO_DELETE_NEWS, new DoDeleteNews());
+        commands.put(RequestPath.DO_LOGOUT, new DoLogout());
+        commands.put(RequestPath.PAGE_CREATE_NEWS, new PageCreate());
+        commands.put(RequestPath.PAGE_EDIT_NEWS, new PageEditNews());
+
+
     }
 
     public Command take(String path){

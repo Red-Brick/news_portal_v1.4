@@ -13,6 +13,7 @@ public class NoCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
         //добавить сообщение
+        System.out.println("error.jsp");
         dispatcher.forward(request,response);
     }
 }
